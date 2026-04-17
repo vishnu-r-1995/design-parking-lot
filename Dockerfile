@@ -1,17 +1,22 @@
-# Stage 1: Build the application
+# =============================================
+# Stage 1: Build the JAR using Maven
+# =============================================
 FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
 COPY pom.xml .
 COPY src ./src
 
-# Build the JAR (skip tests during debug setup)
+# Build the application
 RUN mvn clean package -DskipTests
 
-# Stage 2: Runtime with debug support
-FROM eclipse-temurin:17-jre-alpine
+# =============================================
+# Stage 2: Lightweight runtime with debug support
+# =============================================
+FROM eclipse-temurin:17-jre AS runtime
 WORKDIR /app
 
+# Copy only the built JAR
 COPY --from=build /app/target/design-parking-lot-1.0-SNAPSHOT.jar app.jar
 
 # Enable remote debugging on port 5005
