@@ -6,14 +6,14 @@ import java.util.List;
 
 class ParkingManager {
     private HashMap<VehicleType, List<ParkingUnit>> allUnits = new HashMap<>();
-    private HashMap<String, ParkingUnit> occupiedUnits = new HashMap<>();
-    private HashMap<String, Ticket> tickets = new HashMap<>();
+    private HashMap<String, ParkingUnit> occupiedUnits;
+    private HashMap<String, Ticket> tickets;
 
     public ParkingManager(HashMap<VehicleType, List<ParkingUnit>> allUnits, HashMap<String, ParkingUnit> occupiedUnits,
             HashMap<String, Ticket> tickets) {
         this.allUnits = allUnits;
-        this.occupiedUnits = occupiedUnits;
-        this.tickets = tickets;
+        this.occupiedUnits = new HashMap<>();
+        this.tickets = new HashMap<>();
     }
 
     public void parkVehicle(Vehicle vehicle) {
@@ -48,6 +48,7 @@ class ParkingManager {
     public void vacateVehicle(Vehicle vehicle) {
         ParkingUnit unit = occupiedUnits.get(vehicle.getVehicleNumber());
         unit.vacate();
+        occupiedUnits.remove(unit);
         allUnits.get(unit.getUnitType()).add(unit);
         Ticket ticket = tickets.get(vehicle.getVehicleNumber());
         ticket.calculate();

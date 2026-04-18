@@ -21,6 +21,7 @@ class Main {
         map.put(VehicleType.SMALL, smallUnits);
         map.put(VehicleType.MEDIUM, mediumUnits);
         map.put(VehicleType.SMALL, heavyUnits);
+        pm.setAllUnits(map);
 
         Vehicle v1 = new Vehicle("KL01A123", VehicleType.SMALL);
         Vehicle v2 = new Vehicle("KL07A123", VehicleType.MEDIUM);

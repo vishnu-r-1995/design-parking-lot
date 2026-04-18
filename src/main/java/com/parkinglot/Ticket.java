@@ -49,6 +49,7 @@ class Ticket {
         if (this.exitTime == null) {
             this.exitTime = LocalDateTime.now();
         }
-        this.price = new Price().getPrice(this);
+        this.price = new Price(0d);
+        this.price.calculatePrice(this);
     }
 }
