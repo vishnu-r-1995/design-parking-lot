@@ -25,6 +25,7 @@ class ParkingManager {
                         unit.park(vehicle);
                         occupiedUnits.put(vehicle.getVehicleNumber(), unit);
                         tickets.put(vehicle.getVehicleNumber(), new Ticket(unit, LocalDateTime.now()));
+                        return;
                     }
                 }
             }
