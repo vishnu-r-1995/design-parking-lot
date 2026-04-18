@@ -18,28 +18,14 @@ class ParkingManager {
 
     public void parkVehicle(Vehicle vehicle) {
         VehicleType type = vehicle.getVehicleType();
-        if (type == VehicleType.SMALL) {
-            for (ParkingUnit unit : allUnits.get(VehicleType.SMALL)) {
-                if (!unit.isOccupied()) {
-                    unit.park(vehicle);
-                    occupiedUnits.put(vehicle.getVehicleNumber(), unit);
-                    tickets.put(vehicle.getVehicleNumber(), new Ticket(unit, LocalDateTime.now()));
-                }
-            }
-        } else if (type == VehicleType.MEDIUM) {
-            for (ParkingUnit unit : allUnits.get(VehicleType.MEDIUM)) {
-                if (!unit.isOccupied()) {
-                    unit.park(vehicle);
-                    occupiedUnits.put(vehicle.getVehicleNumber(), unit);
-                    tickets.put(vehicle.getVehicleNumber(), new Ticket(unit, LocalDateTime.now()));
-                }
-            }
-        } else if (type == VehicleType.HEAVY) {
-            for (ParkingUnit unit : allUnits.get(VehicleType.HEAVY)) {
-                if (!unit.isOccupied()) {
-                    unit.park(vehicle);
-                    occupiedUnits.put(vehicle.getVehicleNumber(), unit);
-                    tickets.put(vehicle.getVehicleNumber(), new Ticket(unit, LocalDateTime.now()));
+        for (VehicleType t : VehicleType.values()) {
+            if (t.ordinal() >= type.ordinal()) {
+                for (ParkingUnit unit : allUnits.get(t)) {
+                    if (!unit.isOccupied()) {
+                        unit.park(vehicle);
+                        occupiedUnits.put(vehicle.getVehicleNumber(), unit);
+                        tickets.put(vehicle.getVehicleNumber(), new Ticket(unit, LocalDateTime.now()));
+                    }
                 }
             }
         }
@@ -48,7 +34,7 @@ class ParkingManager {
     public void vacateVehicle(Vehicle vehicle) {
         ParkingUnit unit = occupiedUnits.get(vehicle.getVehicleNumber());
         unit.vacate();
-        occupiedUnits.remove(unit);
+        occupiedUnits.remove(vehicle.getVehicleNumber());
         allUnits.get(unit.getUnitType()).add(unit);
         Ticket ticket = tickets.get(vehicle.getVehicleNumber());
         ticket.calculate();
